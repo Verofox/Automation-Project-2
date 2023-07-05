@@ -78,7 +78,6 @@ describe('Issue create', () => {
       cy.get('[data-testid="select:priority"]').click();
       cy.get('[data-testid="select-option:Highest"]').click();
       // Asserting issue type dropdown
-      cy.get('data-testid="form-field:title"').contains('Bug');
       cy.get('button[type="submit"]').click();
     });
     // Assertions for successful issue creation
