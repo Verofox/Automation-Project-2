@@ -78,7 +78,7 @@ describe('Issue create', () => {
       cy.get('[data-testid="select:priority"]').click();
       cy.get('[data-testid="select-option:Highest"]').click();
       // Asserting issue type dropdown
-      cy.get('.sc-iqzUVk.cUBVJX').contains('Bug');
+      cy.get('data-testid="form-field:title"').contains('Bug');
       cy.get('button[type="submit"]').click();
     });
     // Assertions for successful issue creation
@@ -100,7 +100,10 @@ describe('Issue create', () => {
   it('Should create a new issue using random data plugin and validate it successfully', () => {
     cy.get('[data-testid="modal:issue-create"]').within(() => {
       // Issue type dropdown
-      cy.get('.sc-iqzUVk.cUBVJX').contains('Task');
+      cy.get('[data-testid="select:type"]').click();
+      cy.get('[data-testid="icon:close"]').click();
+      cy.get('[data-testid="select-option:Task"]')
+        .trigger('click');
       // Description field
       cy.get('.ql-editor').type(randomWords);
       // Title field
