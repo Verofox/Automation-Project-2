@@ -32,14 +32,12 @@ describe('Issue delete', () => {
 
     cy.get('[data-testid="board-list:backlog')
       .should('be.visible')
-      .and('have.length', '1').within(() => {
-        // Assert that the first issue from the list has been deleted
-        cy.get('[data-testid="list-issue"]')
-        .should('have.length', '3')
-        .first()
-        .contains(issueTitle)
-        .should('not.exist');
-      });
+      .and('have.length', '1')
+    // Assert that the first issue from the list has been deleted
+      .children()
+      .should('have.length', '3')
+      .first()
+      .should('not.contain', issueTitle);
   });
 
   it('Initiating the process of deleting the issue, but canceling the action.', () => {
@@ -60,14 +58,12 @@ describe('Issue delete', () => {
 
     cy.get('[data-testid="board-list:backlog')
       .should('be.visible')
-      .and('have.length', '1').within(() => {
-        // Assert that the first issue from the list is visible
-        cy.get('[data-testid="list-issue"]')
-        .should('have.length', '4')
-        .first()
-        .contains(issueTitle)
-        .should('be.visible');
-      });
+      .and('have.length', '1')
+    // Assert the presence of the issue in the list
+      .children()
+      .should('have.length', '4')
+      .first()
+      .contains(issueTitle);
   });
 });
 
