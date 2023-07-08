@@ -24,7 +24,7 @@ describe('Issue delete', () => {
     cy.get('[data-testid="modal:confirm"]')
       .should('be.visible');
     cy.get('[data-testid="modal:confirm"]')
-      .contains('Delete issue')
+      .contains('button', 'Delete issue')
       .click()
       .should('not.exist');
 
@@ -34,7 +34,11 @@ describe('Issue delete', () => {
       .should('be.visible')
       .and('have.length', '1').within(() => {
         // Assert that the first issue from the list has been deleted
-        cy.contains(issueTitle).should('not.exist');
+        cy.get('[data-testid="list-issue"]')
+        .should('have.length', '3')
+        .first()
+        .contains(issueTitle)
+        .should('not.exist');
       });
   });
 
@@ -45,7 +49,7 @@ describe('Issue delete', () => {
     cy.get('[data-testid="modal:confirm"]')
       .should('be.visible');
     cy.get('[data-testid="modal:confirm"]')
-      .contains('Cancel')
+      .contains('button', 'Cancel')
       .click()
       .should('not.exist');
     cy.get('[data-testid="icon:close"]')
@@ -58,7 +62,11 @@ describe('Issue delete', () => {
       .should('be.visible')
       .and('have.length', '1').within(() => {
         // Assert that the first issue from the list is visible
-        cy.contains(issueTitle).should('be.visible');
+        cy.get('[data-testid="list-issue"]')
+        .should('have.length', '4')
+        .first()
+        .contains(issueTitle)
+        .should('be.visible');
       });
   });
 });
