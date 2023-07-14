@@ -8,6 +8,8 @@ describe('Issue delete', () => {
       cy.get('[data-testid="board-list:backlog"]')
         .children()
         .first()
+        .find('p')
+        .contains('This is an issue of type: Task.')
         .click();
       cy.get('[data-testid="modal:issue-details"]')
         .should('be.visible');
