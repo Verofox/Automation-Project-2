@@ -7,6 +7,7 @@ describe('Issue delete', () => {
   beforeEach(() => {
     cy.visit('/');
     cy.url().should('eq', 'https://jira.ivorreic.com/project').then((url) => {
+      cy.visit(url + '/board');
     //open issue detail modal with title from line 16  
     cy.contains(issueTitle).click();
     });
