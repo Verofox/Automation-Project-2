@@ -5,34 +5,35 @@ describe('Issue delete', () => {
     cy.url().should('eq', `${Cypress.env('baseUrl')}project`).then((url) => {
       cy.visit(url + '/board');
       // Access first available issue
-      cy.get('[data-testid="board-list:backlog"]')
+      getBacklogList()
         .children()
         .first()
         .find('p')
-        .contains('This is an issue of type: Task.')
+        .contains(issueTitle)
         .click();
-      cy.get('[data-testid="modal:issue-details"]')
+      getIssueDetailsModal()
         .should('be.visible');
     });
   });
 
-  let issueTitle = 'This is an issue of type: Task.'
+  const issueTitle = 'This is an issue of type: Task.'
   const getIssueDetailsModal = () => cy.get('[data-testid="modal:issue-details"]');
+  const getBacklogList = () => cy.get('[data-testid="board-list:backlog"]');
+  const getConfirmationPopup = () => cy.get('[data-testid="modal:confirm"]');
 
   it('Deleting first issue from backlog list and verifying successful removal ', () => {
     getIssueDetailsModal()
       .find('[data-testid="icon:trash"]')
       .click();
-    cy.get('[data-testid="modal:confirm"]')
-      .should('be.visible');
-    cy.get('[data-testid="modal:confirm"]')
+    getConfirmationPopup()
+      .should('be.visible')
       .contains('button', 'Delete issue')
       .click()
       .should('not.exist');
 
     cy.reload();
 
-    cy.get('[data-testid="board-list:backlog')
+    getBacklogList()
       .should('be.visible')
       .and('have.length', '1')
     // Assert that the first issue from the list has been deleted
@@ -46,9 +47,8 @@ describe('Issue delete', () => {
     getIssueDetailsModal()
       .find('[data-testid="icon:trash"]')
       .click();
-    cy.get('[data-testid="modal:confirm"]')
-      .should('be.visible');
-    cy.get('[data-testid="modal:confirm"]')
+    getConfirmationPopup()
+      .should('be.visible')
       .contains('button', 'Cancel')
       .click()
       .should('not.exist');
@@ -58,7 +58,7 @@ describe('Issue delete', () => {
 
     cy.reload();
 
-    cy.get('[data-testid="board-list:backlog')
+    getBacklogList()
       .should('be.visible')
       .and('have.length', '1')
     // Assert the presence of the issue in the list
