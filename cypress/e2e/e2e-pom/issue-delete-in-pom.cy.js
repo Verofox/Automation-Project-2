@@ -8,26 +8,27 @@ describe('Issue delete', () => {
     cy.visit('/');
     cy.url().should('eq', 'https://jira.ivorreic.com/project').then((url) => {
       cy.visit(url + '/board');
-    //open issue detail modal with title from line 16  
-    cy.contains(issueTitle).click();
+      //open issue detail modal with title from line 16  
+      cy.contains(issueTitle).click();
     });
   });
 
- 
+
   const issueTitle = 'This is an issue of type: Task.';
 
   it('Should delete issue successfully', () => {
-    IssueModal.getIssueDetailModal();
     IssueModal.clickDeleteButton();
     IssueModal.confirmDeletion();
     IssueModal.ensureIssueIsNotVisibleOnBoard(issueTitle);
+    IssueModal.validateIssueVisibilityState(issueTitle, false);
   });
 
+  
   it('Should cancel deletion process successfully', () => {
-    IssueModal.getIssueDetailModal();
     IssueModal.clickDeleteButton();
     IssueModal.cancelDeletion();
     IssueModal.closeDetailModal();
     IssueModal.ensureIssueIsVisibleOnBoard(issueTitle);
+    IssueModal.validateIssueVisibilityState(issueTitle, true);
   });
 });
