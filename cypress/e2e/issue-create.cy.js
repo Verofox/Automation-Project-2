@@ -1,26 +1,25 @@
 import { faker } from '@faker-js/faker';
 
-const randomWord = faker.lorem.word()
-const randomWords = faker.lorem.words(3)
-
+const randomWord = faker.lorem.word();
+const randomWords = faker.lorem.words(3);
 
 describe('Issue create', () => {
   beforeEach(() => {
     cy.visit('/');
-    cy.url().should('eq', 'https://jira.ivorreic.com/project').then((url) => {
-      //System will already open issue creating modal in beforeEach block  
-      cy.visit(url + '/board?modal-issue-create=true');
-    });
+    cy.url()
+      .should('eq', 'https://jira.ivorreic.com/project')
+      .then((url) => {
+        //System will already open issue creating modal in beforeEach block
+        cy.visit(url + '/board?modal-issue-create=true');
+      });
   });
 
   it('Should create an issue and validate it successfully', () => {
     //System finds modal for creating issue and does next steps inside of it
     cy.get('[data-testid="modal:issue-create"]').within(() => {
-
       //open issue type dropdown and choose Story
       cy.get('[data-testid="select:type"]').click();
-      cy.get('[data-testid="select-option:Story"]')
-        .trigger('click');
+      cy.get('[data-testid="select-option:Story"]').trigger('click');
 
       //Type value to description input field
       cy.get('.ql-editor').type('TEST_DESCRIPTION');
@@ -48,17 +47,20 @@ describe('Issue create', () => {
     cy.contains('Issue has been successfully created.').should('not.exist');
 
     //Assert than only one list with name Backlog is visible and do steps inside of it
-    cy.get('[data-testid="board-list:backlog').should('be.visible').and('have.length', '1').within(() => {
-      //Assert that this list contains 5 issues and first element with tag p has specified text
-      cy.get('[data-testid="list-issue"]')
-        .should('have.length', '5')
-        .first()
-        .find('p')
-        .contains('TEST_TITLE');
-      //Assert that correct avatar and type icon are visible
-      cy.get('[data-testid="avatar:Lord Gaben"]').should('be.visible');
-      cy.get('[data-testid="icon:story"]').should('be.visible');
-    });
+    cy.get('[data-testid="board-list:backlog')
+      .should('be.visible')
+      .and('have.length', '1')
+      .within(() => {
+        //Assert that this list contains 5 issues and first element with tag p has specified text
+        cy.get('[data-testid="list-issue"]')
+          .should('have.length', '5')
+          .first()
+          .find('p')
+          .contains('TEST_TITLE');
+        //Assert that correct avatar and type icon are visible
+        cy.get('[data-testid="avatar:Lord Gaben"]').should('be.visible');
+        cy.get('[data-testid="icon:story"]').should('be.visible');
+      });
   });
 
   it('Should create a new issue type: Bug and validate it successfully', () => {
@@ -69,8 +71,7 @@ describe('Issue create', () => {
       cy.get('input[name="title"]').type('Bug');
       // Issue type dropdown
       cy.get('[data-testid="select:type"]').click();
-      cy.get('[data-select-option-value="bug"]')
-        .trigger('click');
+      cy.get('[data-select-option-value="bug"]').trigger('click');
       // Reporter dropdown
       cy.get('[data-testid="select:reporterId"]').click();
       cy.get('[data-testid="select-option:Pickle Rick"]').click();
@@ -85,15 +86,18 @@ describe('Issue create', () => {
     cy.contains('Issue has been successfully created.').should('be.visible');
     cy.reload();
     cy.contains('Issue has been successfully created.').should('not.exist');
-    cy.get('[data-testid="board-list:backlog').should('be.visible').and('have.length', '1').within(() => {
-      cy.get('[data-testid="list-issue"]')
-        .should('have.length', '5')
-        .first()
-        .find('p')
-        .contains('Bug');
-      cy.get('[data-testid="icon:bug"]').should('be.visible');
-      // Avatar icon is not visible
-    });
+    cy.get('[data-testid="board-list:backlog')
+      .should('be.visible')
+      .and('have.length', '1')
+      .within(() => {
+        cy.get('[data-testid="list-issue"]')
+          .should('have.length', '5')
+          .first()
+          .find('p')
+          .contains('Bug');
+        cy.get('[data-testid="icon:bug"]').should('be.visible');
+        // Avatar icon is not visible
+      });
   });
 
   it('Should create a new issue using random data plugin and validate it successfully', () => {
@@ -101,8 +105,7 @@ describe('Issue create', () => {
       // Issue type dropdown
       cy.get('[data-testid="select:type"]').click();
       cy.get('[data-testid="icon:close"]').click();
-      cy.get('[data-testid="select-option:Task"]')
-        .trigger('click');
+      cy.get('[data-testid="select-option:Task"]').trigger('click');
       // Description field
       cy.get('.ql-editor').type(randomWords);
       // Title field
@@ -120,18 +123,21 @@ describe('Issue create', () => {
     cy.contains('Issue has been successfully created.').should('be.visible');
     cy.reload();
     cy.contains('Issue has been successfully created.').should('not.exist');
-    cy.get('[data-testid="board-list:backlog').should('be.visible').and('have.length', '1').within(() => {
-      cy.get('[data-testid="list-issue"]')
-        .should('have.length', '5')
-        .first()
-        .find('p')
-        .contains(randomWord)
-        .should('be.visible');
-      cy.get('[data-testid="list-issue"]')
-        .first()
-        .find('[data-testid="icon:task"]')
-        .should('be.visible');
-    });
+    cy.get('[data-testid="board-list:backlog')
+      .should('be.visible')
+      .and('have.length', '1')
+      .within(() => {
+        cy.get('[data-testid="list-issue"]')
+          .should('have.length', '5')
+          .first()
+          .find('p')
+          .contains(randomWord)
+          .should('be.visible');
+        cy.get('[data-testid="list-issue"]')
+          .first()
+          .find('[data-testid="icon:task"]')
+          .should('be.visible');
+      });
   });
 
   it('Should validate title is required field if missing', () => {
@@ -141,7 +147,33 @@ describe('Issue create', () => {
       cy.get('button[type="submit"]').click();
 
       //Assert that correct error message is visible
-      cy.get('[data-testid="form-field:title"]').should('contain', 'This field is required');
+      cy.get('[data-testid="form-field:title"]').should(
+        'contain',
+        'This field is required'
+      );
     });
+  });
+
+  it.only('Should verify that application is removing unnecessary spaces on the board view', () => {
+    const createTestIssueDescription = 'Enjoying the summer';
+    const createTestIssueTitle = ' Hello  Summer   ';
+
+    cy.get('.ql-editor').type(createTestIssueDescription);
+    cy.get('input[name="title"]').type(createTestIssueTitle);
+    cy.get('button[type="submit"]').click();
+    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
+    cy.reload();
+    cy.get('[data-testid="board-list:backlog').should('be.visible');
+    cy.get('[data-testid="list-issue"]')
+      .first()
+      .then(($issue) => {
+        const boardIssueTitle = $issue.text().trim();
+
+        // Assert the board issue title matches created issue
+        expect(boardIssueTitle).to.equal(createTestIssueTitle.trim());
+      })
+      .click();
+
+    cy.get('[data-testid="modal:issue-details"]').should('be.visible');
   });
 });

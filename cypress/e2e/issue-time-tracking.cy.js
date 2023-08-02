@@ -5,7 +5,7 @@ describe('Issue time-tracking adding, editing and removing estimation', () => {
       .should('eq', 'https://jira.ivorreic.com/project')
       .then((url) => {
         cy.visit(url + '/board?modal-issue-create=true');
-        //Create issue for time estimation
+        //Create issue 
         cy.get('.ql-editor').type(createTestIssueDescription);
         cy.get('input[name="title"]').type(createTestIssueTitle);
         cy.get('button[type="submit"]').click();
